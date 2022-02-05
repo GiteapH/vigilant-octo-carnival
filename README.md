@@ -20,4 +20,5 @@ tip:使用前先建个mysql，这是建表语句:
 ippool的作用:获取代理ip
 LinkDatabase的作用:一些数据库的基本操作函数
 Spildertools的作用:提供分解字符串和根据url获取页内文本的函数
+databasesplit的作用:爬出的数据有5000w，为了避免查找效率低，进行水平分表
 ```
