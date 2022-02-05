@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class LinkDataBase {
+    //更新ip代理池
     public static void updateIpPool(String url){
        new ipPool().setPoolList(url);
     }
+    //通过List向数据库添加记录,可变参数是数据库的列名，要和string[]一一对应！
     public static void addVals(List<String[]> needAdd,String tableName,String databaseName,String... keys){
         Statement statement = getStatementByDataBaseName(databaseName);
         int len = needAdd.get(0).length;
@@ -46,21 +48,7 @@ public class LinkDataBase {
             System.out.println("   成功");*/
         }
     }
-    //先更新全览，在跟新余表
-    public static void updateOtherTable() throws SQLException {
-        Statement statement = LinkDataBase.getStatementByDataBaseName("Data");
-        if(statement==null){
-            System.out.println("更新余表失败");
-            return;
-        }
-        statement.executeUpdate("INSERT INTO `上海债券` SELECT * FROM `上海全览` WHERE Mtype='债券';");
-        statement.executeUpdate("INSERT INTO `上海股票` SELECT * FROM `上海全览` WHERE Mtype='股票';");
-        statement.executeUpdate("INSERT INTO `上海基金` SELECT * FROM `上海全览` WHERE Mtype='基金';");
-        statement.executeUpdate("INSERT INTO `上海指数` SELECT * FROM `上海全览` WHERE Mtype='指数';");
-        statement.executeUpdate("INSERT INTO `深圳指数` SELECT * FROM `深圳全览` WHERE Mtype='指数';");
-        statement.executeUpdate("INSERT INTO `深圳股票` SELECT * FROM `深圳全览` WHERE Mtype='股票';");
-        statement.executeUpdate("INSERT INTO `深圳债券` SELECT * FROM `深圳全览` WHERE Mtype='债券';");
-    }
+    //删除数据库的tableName表
     public static void DropAll(String tableName){
         Statement statement = LinkDataBase.getStatementByDataBaseName("Data");
         try {
@@ -75,6 +63,7 @@ public class LinkDataBase {
         }
     }
     public static Statement getStatementByDataBaseName(String databasename){
+        //连接mysql  根据需要改localhost和端口号,比如要从本地更改服务器的数据库
         String url = "jdbc:mysql://localhost:3306/"+databasename+"?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8";
         try {
             return Objects.requireNonNull(Link(url)).createStatement();
